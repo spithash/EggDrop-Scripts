@@ -20,7 +20,7 @@
 # The trigger - set this to anything you'd like
 set pubtrig "!"
 
-# ---- STOP EDITING HERE. This code was created, and only myself and god knew how it worked. Now only god knows ---- #
+# ---- STOP EDITING HERE. When this code was created, and only myself and god knew how it worked. Now only god knows ---- #
 proc getTrigger {} {
   global pubtrig
   return $pubtrig
