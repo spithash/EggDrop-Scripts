@@ -33,7 +33,11 @@ proc getTrigger {} {
   return $pubtrig
 }
 
+<<<<<<< HEAD
 bind pub - ${pubtrig}ignore ignore:pub
+=======
+bind pub - ${pubtrig}ignore:pub
+>>>>>>> 146589b18fb45d52b69963daf68d694e3443f3a5
 bind pub - ${pubtrig}ignores ignore:list
 
 proc ignore:pub {nick host hand chan arg} {
