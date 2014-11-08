@@ -19,10 +19,12 @@
 # SOFTWARE.
 # Commands: 
 # ---------
-# OPs:  !ignore add <*!*host@mask.etc> <duration> <reason>
-#       !ignore add <nick> <duration> <reason>
-#       !ignore del *!*host@mask.etc
-#       !ignores
+# Public:   !ass - Returns a random ass picture from /r/ass
+#       	!pussy - Returns a random ass picture from /r/pussy
+#       	!tits - Returns a random ass picture from /r/Boobies
+#       	!gif - Returns a random gif picture from /r/NSFW_GIF
+#       	!nsfw [number] - Returns a list of random pictures from /r/nsfw
+#       	!nsfw [subreddit] [number] - Returns a list of random pictures from /r/[subreddit]
 package require http
 package require tls
 package require json
@@ -51,17 +53,17 @@ proc tits:pub {nick host hand chan arg} {
   set data [lindex $responseBody 1]
   set linkid [myRand 0 30]
   set imagedata [lindex $data $linkid]
-  if {[regexp -nocase {link (.*?) reddit_comments} $imagedata " " link]} {
-    regsub -nocase -- {link (.*?) reddit_comments} $link "\\1" link
-    regsub -nocase -- {looping true} $link "" link
-  } else {
-    set link "Wohhh there cowboy, slow down!"
-  }
-  if {[regexp -nocase {title {(.*?)} description} $imagedata " " title]} {
-    regsub -nocase -- {title {(.*?)} description} $title "\\1" title
-  } else {
-    set title "Title Unknown"
-  }
+	  if {[regexp -nocase {link (.*?) reddit_comments} $imagedata " " link]} {
+	    regsub -nocase -- {link (.*?) reddit_comments} $link "\\1" link
+	    regsub -nocase -- {looping true} $link "" link
+	  } else {
+	    set link "Wohhh there cowboy, slow down!"
+	  }
+	  if {[regexp -nocase {title {(.*?)} description} $imagedata " " title]} {
+	    regsub -nocase -- {title {(.*?)} description} $title "\\1" title
+	  } else {
+	    set title "Title Unknown"
+	  }
   putserv "PRIVMSG $chan :\002NSFW\002 Your random tits! $link - Title: $title"
   http::cleanup $token
 }
@@ -75,17 +77,17 @@ proc ass:pub {nick host hand chan arg} {
   set data [lindex $responseBody 1]
   set linkid [myRand 0 30]
   set imagedata [lindex $data $linkid]
-  if {[regexp -nocase {link (.*?) reddit_comments} $imagedata " " link]} {
-    regsub -nocase -- {link (.*?) reddit_comments} $link "\\1" link
-    regsub -nocase -- {looping true} $link "" link
-  } else {
-    set link "Wohhh there cowboy, slow down!"
-  }
-  if {[regexp -nocase {title {(.*?)} description} $imagedata " " title]} {
-    regsub -nocase -- {title {(.*?)} description} $title "\\1" title
-  } else {
-    set title "Title Unknown"
-  }
+	  if {[regexp -nocase {link (.*?) reddit_comments} $imagedata " " link]} {
+	    regsub -nocase -- {link (.*?) reddit_comments} $link "\\1" link
+	    regsub -nocase -- {looping true} $link "" link
+	  } else {
+	    set link "Wohhh there cowboy, slow down!"
+	  }
+	  if {[regexp -nocase {title {(.*?)} description} $imagedata " " title]} {
+	    regsub -nocase -- {title {(.*?)} description} $title "\\1" title
+	  } else {
+	    set title "Title Unknown"
+	  }
   putserv "PRIVMSG $chan :\002NSFW\002 Your random ass! $link - Title: $title"
   http::cleanup $token
 }
@@ -99,17 +101,17 @@ proc pussy:pub {nick host hand chan arg} {
   set data [lindex $responseBody 1]
   set linkid [myRand 0 30]
   set imagedata [lindex $data $linkid]
-  if {[regexp -nocase {link (.*?) reddit_comments} $imagedata " " link]} {
-    regsub -nocase -- {link (.*?) reddit_comments} $link "\\1" link
-    regsub -nocase -- {looping true} $link "" link
-  } else {
-    set link "Wohhh there cowboy, slow down!"
-  }
-  if {[regexp -nocase {title {(.*?)} description} $imagedata " " title]} {
-    regsub -nocase -- {title {(.*?)} description} $title "\\1" title
-  } else {
-    set title "Title Unknown"
-  }
+	  if {[regexp -nocase {link (.*?) reddit_comments} $imagedata " " link]} {
+	    regsub -nocase -- {link (.*?) reddit_comments} $link "\\1" link
+	    regsub -nocase -- {looping true} $link "" link
+	  } else {
+	    set link "Wohhh there cowboy, slow down!"
+	  }
+	  if {[regexp -nocase {title {(.*?)} description} $imagedata " " title]} {
+	    regsub -nocase -- {title {(.*?)} description} $title "\\1" title
+	  } else {
+	    set title "Title Unknown"
+	  }
   putserv "PRIVMSG $chan :\002NSFW\002 Your random pussy! $link - Title: $title"
   http::cleanup $token
 }
@@ -123,22 +125,24 @@ proc gif:pub {nick host hand chan arg} {
   set data [lindex $responseBody 1]
   set linkid [myRand 0 30]
   set imagedata [lindex $data $linkid]
-  if {[regexp -nocase {link (.*?) reddit_comments} $imagedata " " link]} {
-    regsub -nocase -- {link (.*?) reddit_comments} $link "\\1" link
-    regsub -nocase -- {looping true} $link "" link
-  } else {
-    set link "Wohhh there cowboy, slow down!"
-  }
-  if {[regexp -nocase {title {(.*?)} description} $imagedata " " title]} {
-    regsub -nocase -- {title {(.*?)} description} $title "\\1" title
-  } else {
-    set title "Title Unknown"
-  }
+	  if {[regexp -nocase {link (.*?) reddit_comments} $imagedata " " link]} {
+	    regsub -nocase -- {link (.*?) reddit_comments} $link "\\1" link
+	    regsub -nocase -- {looping true} $link "" link
+	  } else {
+	    set link "Wohhh there cowboy, slow down!"
+	  }
+	  if {[regexp -nocase {title {(.*?)} description} $imagedata " " title]} {
+	    regsub -nocase -- {title {(.*?)} description} $title "\\1" title
+	  } else {
+	    set title "Title Unknown"
+	  }
   putserv "PRIVMSG $chan :\002NSFW\002 Your random porn gif! $link - Title: $title"
   http::cleanup $token
 }
 proc nsfw:pub {nick host hand chan arg} {
   set page [myRand 0 50]
+  set arg1 [lindex $arg 0]
+  set arg2 [lindex $arg 1]
   set theurl "https://api.imgur.com/3/gallery/r/nsfw/time/$page"
   dict set hdr Authorization "Client-ID cefb2e6ae32f74f"
   http::register https 443 [list ::tls::socket -tls1 1]
@@ -147,37 +151,82 @@ proc nsfw:pub {nick host hand chan arg} {
   set data [lindex $responseBody 1]
   set linkid [myRand 0 30]
   set imagedata [lindex $data $linkid]
-  if {$arg == "help"} {
-    putserv "PRIVMSG $chan :\002NSFW\002 use !tits for random tits, !ass for random ass, !pussy for random pussy, !nsfw for random porn, !nsfw NUMBER for a list of porn"
-    return "hai"
-  }
-  if {$arg != "" && $arg != "help"} {
-    set listnsfw ""
-    for {set i 0} {$i < $arg} {incr i} {
-      set randata [lindex $data $i]
-        if {[regexp -nocase {link (.*?) reddit_comments} $randata " " link]} {
-          regsub -nocase -- {link (.*?) reddit_comments} $link "\\1" link
-          regsub -nocase -- {looping true} $link "" link
-          lappend listnsfw $link
-        } else {
-          set link "Wohhh there cowboy, slow down!"
-        }
-    }
-    putserv "PRIVMSG $chan :\002NSFW\002 Random Tities/Ass/Pussy/Whoknows $listnsfw"
-  } else {
-        if {[regexp -nocase {link (.*?) reddit_comments} $imagedata " " link]} {
-          regsub -nocase -- {link (.*?) reddit_comments} $link "\\1" link
-          regsub -nocase -- {looping true} $link "" link
-        } else {
-          set link "Wohhh there cowboy, slow down!"
-        }
-        if {[regexp -nocase {title {(.*?)} description} $imagedata " " title]} {
-          regsub -nocase -- {title {(.*?)} description} $title "\\1" title
-        } else {
-          set title "Title Unknown"
-        }
-        putserv "PRIVMSG $chan :\002NSFW\002 Random Tities/Ass/Pussy/Whoknows $link - Title: $title"
-  }
+	  if {$arg1 == "help"} {
+		putserv "PRIVMSG $chan :\002NSFW\002 !ass - Returns a random ass picture from /r/ass"
+		putserv "PRIVMSG $chan :\002NSFW\002 !pussy - Returns a random ass picture from /r/pussy"
+		putserv "PRIVMSG $chan :\002NSFW\002 !tits - Returns a random ass picture from /r/Boobies"
+		putserv "PRIVMSG $chan :\002NSFW\002 !gif - Returns a random gif picture from /r/NSFW_GIF"
+		putserv "PRIVMSG $chan :\002NSFW\002 !nsfw \[number\] - Returns a list of random pictures from /r/nsfw"
+		putserv "PRIVMSG $chan :\002NSFW\002 !nsfw \[subreddit\] \[number\] - Returns a list of random pictures from /r/\[subreddit\]"
+	    return ""
+	  }
+	  if {[regexp {^([0-9]+)$} $arg1]} {
+	  	if {$arg1 > 10} {
+	  		set arg1 10
+	  	}
+	    set listnsfw ""
+	    for {set i 0} {$i < $arg1} {incr i} {
+	      set randata [lindex $data $i]
+	        if {[regexp -nocase {link (.*?) reddit_comments} $randata " " link]} {
+	          regsub -nocase -- {link (.*?) reddit_comments} $link "\\1" link
+	          regsub -nocase -- {looping true} $link "" link
+	          lappend listnsfw $link
+	        } else {
+	          set link "Wohhh there cowboy, slow down!"
+	        }
+	    }
+	    putserv "PRIVMSG $chan :\002NSFW\002 Random Tities/Ass/Pussy/Whoknows $listnsfw"
+	  } elseif {[regexp {^([a-zA-Z]+)$} $arg1]} {
+	  		  set theurl "https://api.imgur.com/3/gallery/r/$arg1/time/$page"
+			  dict set hdr Authorization "Client-ID cefb2e6ae32f74f"
+			  http::register https 443 [list ::tls::socket -tls1 1]
+			  set token [http::geturl $theurl -headers $hdr -query]
+			  set responseBody [::json::json2dict [http::data $token]]
+			  set data [lindex $responseBody 1]
+			  set linkid [myRand 0 30]
+			  set imagedata [lindex $data $linkid]
+			  set listnsfw ""
+				if {$arg2 == "" || $arg2 == 0} {
+					set arg2 1
+				}
+				if {$arg2 > 10} {
+		  			set arg2 10
+		  		}
+		    	for {set i 0} {$i < $arg2} {incr i} {
+		    		set randata [lindex $data $i]
+			        if {[regexp -nocase {link (.*?) reddit_comments} $randata " " link]} {
+			          regsub -nocase -- {link (.*?) reddit_comments} $link "\\1" link
+			          regsub -nocase -- {looping true} $link "" link
+			          lappend listnsfw $link
+			        } else {
+			          set link "Wohhh there cowboy, slow down!"
+			        }
+			        if {[regexp -nocase {title {(.*?)} description} $imagedata " " title]} {
+			          regsub -nocase -- {title {(.*?)} description} $title "\\1" title
+			        } else {
+			          set title "Title Unknown"
+			        }
+		   		}
+		   		if {$arg2 == 1} {
+		   			putserv "PRIVMSG $chan :\002NSFW\002 Random $arg1 $link - Title: $title"
+		   		} else {
+		   			putserv "PRIVMSG $chan :\002NSFW\002 Random $arg1 $listnsfw"
+		   		}
+	        
+	  } else {
+	  	    if {[regexp -nocase {link (.*?) reddit_comments} $imagedata " " link]} {
+	          regsub -nocase -- {link (.*?) reddit_comments} $link "\\1" link
+	          regsub -nocase -- {looping true} $link "" link
+	        } else {
+	          set link "Wohhh there cowboy, slow down!"
+	        }
+	        if {[regexp -nocase {title {(.*?)} description} $imagedata " " title]} {
+	          regsub -nocase -- {title {(.*?)} description} $title "\\1" title
+	        } else {
+	          set title "Title Unknown"
+	        }
+	        putserv "PRIVMSG $chan :\002NSFW\002 Random porn $link - Title: $title"
+	  }
   
   http::cleanup $token
 }
@@ -188,4 +237,4 @@ proc myRand { min max } {
 return $value
 }
 
-#putlog ".:Loaded:. ignore.tcl - HackPat@Freenode"
+putlog ".:Loaded:. rannsfw.tcl - HackPat@Freenode"
