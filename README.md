@@ -1,9 +1,7 @@
 #EggDrop-Scripts
-===============
 Just a place to put my scripts
 
 #rannsfw.tcl
-===============
   
 	Commands: 
 	---------
@@ -16,7 +14,6 @@ Just a place to put my scripts
 
 
 #ignore.tcl
-===============
 
 	Commands: 
 	---------
@@ -27,7 +24,6 @@ Just a place to put my scripts
 
 
 #register.tcl
-===============
 
 	Commands: 
 	---------
