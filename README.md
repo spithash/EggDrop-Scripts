@@ -5,6 +5,7 @@ Just a place to put my scripts
 
 rannsfw.tcl
 ===============
+
 # Public:   !ass - Returns a random ass picture from /r/ass
 #       	!pussy - Returns a random ass picture from /r/pussy
 #       	!tits - Returns a random ass picture from /r/Boobies
@@ -15,6 +16,7 @@ rannsfw.tcl
 
 ignore.tcl
 ===============
+
 # Commands: 
 # ---------
 # OPs:  !ignore add <*!*host@mask.etc> <duration> <reason>
@@ -25,6 +27,7 @@ ignore.tcl
 
 register.tcl
 ===============
+
 # Public: !register
 #         !unregister
 # OP:     !unregister
