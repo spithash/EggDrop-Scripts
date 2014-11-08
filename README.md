@@ -21,19 +21,19 @@ Just a place to put my scripts
 
 ===============
 
-  Commands: 
-  ---------
-  OPs:  !ignore add <*!*host@mask.etc> <duration> <reason>
-        !ignore add <nick> <duration> <reason>
-        !ignore del *!*host@mask.etc
-        !ignores
+	Commands: 
+	---------
+	OPs:  !ignore add <*!*host@mask.etc> <duration> <reason>
+	      !ignore add <nick> <duration> <reason>
+	      !ignore del *!*host@mask.etc
+	      !ignores
 
 
 #register.tcl
 ===============
 
-  Commands: 
-  ---------
-  Public: !register
-          !unregister
-  OP:     !unregister
+	Commands: 
+	---------
+	Public: !register
+	        !unregister
+	OP:     !unregister
