@@ -17,17 +17,25 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+#
+#
 # Commands: 
+# All commands except !unban require the user to be in the channel
+# !op, !deop require the person being modified to be registered within EggDrop
+#
 # ---------
 # Bot Owners
-#	!addop - Modifies the bot's userfile to add OP (+o) to a user (does not auto OP)
+#	!addop <NICK> - Modifies the bot's userfile to add OP (+o) to a user (does not auto OP)
+#	!delop <NICK> - Modifies the bot's userfile to remove OP (-o) from a user (does not auto-deop)
 # OPs
-#	!delop - Modifies the bot's userfile to remove OP (-o) from a user (does not auto-deop)
-# 	!op - OPs user in channel
-#	!deop - DeOPs user in a channel
-#	!kick - Kicks user from channel
-#	!ban - bans user from channel
-#	!unban - unbans user from channel (must use !unban HOSTMASK)
+# 	!op <NICK> - OPs user in channel. To OP yourself use !op <MYNICK>
+#	!deop <NICK> - DeOPs user in a channel. To DEOP yourself use !deop <MYNICK>
+#	!kick <NICK> - Kicks user from channel
+#	!ban <NICK> - bans user from channel for 60 minutes.
+#	!unban <HOSTMASK> - unbans user from channel (must use !unban HOSTMASK). Can not unban via Nick (yet)
+#
+# Public
+#	!listops - returns a list of the OPd members on the bot.
 
 # The trigger
 set pubtrig "!"
@@ -45,6 +53,7 @@ bind pub - ${pubtrig}deop op:deop
 bind pub - ${pubtrig}kick op:kick
 bind pub - ${pubtrig}ban op:ban
 bind pub - ${pubtrig}unban op:unban
+bind pub - ${pubtrig}listops op:userlist
 
 proc owner:addop {nick host hand chan arg} {
 	if {[matchattr $hand +n]} {
@@ -56,7 +65,7 @@ proc owner:addop {nick host hand chan arg} {
 			putserv "PRIVMSG $chan :Something went wrong trying to get users handle. Are you sure they are registered?"
 		}
 	} else {
-		putserv "PRIVMSG $chan :You do not appear to be a bot owner. Are you sure that you should be running this command?"
+		putserv "PRIVMSG $nick :You do not appear to be a bot owner. Are you sure that you should be running this command?"
 	}
 }
 proc owner:delop {nick host hand chan arg} {
@@ -69,7 +78,7 @@ proc owner:delop {nick host hand chan arg} {
 			putserv "PRIVMSG $chan :Something went wrong trying to get users handle. Are you sure they are registered?"
 		}
 	} else {
-		putserv "PRIVMSG $chan :You do not appear to be a bot owner. Are you sure that you should be running this command?"
+		putserv "PRIVMSG $nick :You do not appear to be a bot owner. Are you sure that you should be running this command?"
 	}
 }
 proc op:op {nick host hand chan arg} {
@@ -80,7 +89,7 @@ proc op:op {nick host hand chan arg} {
 			putserv "PRIVMSG $chan :Something went wrong trying to get users handle. Are you sure they are registered?"
 		}
 	} else {
-		putserv "PRIVMSG $chan :You do not appear to be an Operator (OP). Are you sure that you should be running this command?"
+		putserv "PRIVMSG $nick :You do not appear to be an Operator (OP). Are you sure that you should be running this command?"
 	}
 }
 proc op:deop {nick host hand chan arg} {
@@ -109,7 +118,7 @@ proc op:kick {nick host hand chan arg} {
 			putserv "PRIVMSG $chan :Something went wrong trying to get users handle. Are you sure they are currently in the channel?"
 		}
 	} else {
-		putserv "PRIVMSG $chan :You do not appear to be an Operator (OP). Are you sure that you should be running this command?"
+		putserv "PRIVMSG $nick :You do not appear to be an Operator (OP). Are you sure that you should be running this command?"
 	}
 }
 proc op:ban {nick host hand chan arg} {
@@ -137,7 +146,7 @@ proc op:ban {nick host hand chan arg} {
 			putserv "PRIVMSG $chan :Something went wrong trying to get users handle. Are you sure they are currently in the channel?"
 		}
 	} else {
-		putserv "PRIVMSG $chan :You do not appear to be an Operator (OP). Are you sure that you should be running this command?"
+		putserv "PRIVMSG $nick :You do not appear to be an Operator (OP). Are you sure that you should be running this command?"
 	}
 }
 proc op:unban {nick host hand chan arg} {
@@ -150,8 +159,19 @@ proc op:unban {nick host hand chan arg} {
 			putserv "PRIVMSG $chan :Something went wrong trying to unban user. You can only unban users by using the hostmask that they were banned with."
 		}
 	} else {
-		putserv "PRIVMSG $chan :You do not appear to be an Operator (OP). Are you sure that you should be running this command?"
+		putserv "PRIVMSG $nick :You do not appear to be an Operator (OP). Are you sure that you should be running this command?"
 	}
+}
+proc op:userlist {nick host hand chan arg} { 
+    if {[userlist $chan] == ""} { 
+        putserv "PRIVMSG $nick :Userlist empty for $chan." 
+    } else { 
+    foreach user [userlist +o] { 
+        lappend tmp $user 
+    } 
+    set oplist [join $tmp ", "]
+    putquick "PRIVMSG $chan :OPs in this channel are $oplist." 
+  } 
 }
 
 putlog "Admin Tools HackPat @ FreeNode"
