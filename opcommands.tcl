@@ -51,12 +51,15 @@ bind pub - ${pubtrig}delop owner:delop
 bind pub - ${pubtrig}op op:op
 bind pub - ${pubtrig}deop op:deop
 bind pub - ${pubtrig}kick op:kick
+bind pub - ${pubtrig}whack op:kick
 bind pub - ${pubtrig}ban op:ban
 bind pub - ${pubtrig}unban op:unban
 bind pub - ${pubtrig}listops op:userlist
 
 proc owner:addop {nick host hand chan arg} {
 	if {[matchattr $hand +n]} {
+		regsub {^[\ ]*} $arg "" arg
+		regsub {[\ ]*$} $arg "" arg
 		if {[nick2hand $arg]  != "" } {
 			set nickname [nick2hand $arg]
 			chattr $nickname "+o"
@@ -69,6 +72,8 @@ proc owner:addop {nick host hand chan arg} {
 	}
 }
 proc owner:delop {nick host hand chan arg} {
+	regsub {^[\ ]*} $arg "" arg
+	regsub {[\ ]*$} $arg "" arg
 	if {[matchattr $hand +n]} {
 		if {[nick2hand $arg]  != "" } {
 			set nickname [nick2hand $arg]
@@ -82,6 +87,8 @@ proc owner:delop {nick host hand chan arg} {
 	}
 }
 proc op:op {nick host hand chan arg} {
+	regsub {^[\ ]*} $arg "" arg
+	regsub {[\ ]*$} $arg "" arg
 	if {[matchattr $hand +o]} {
 		if {[nick2hand $arg]  != "" } {
 			pushmode $chan +o $arg
@@ -93,6 +100,8 @@ proc op:op {nick host hand chan arg} {
 	}
 }
 proc op:deop {nick host hand chan arg} {
+	regsub {^[\ ]*} $arg "" arg
+	regsub {[\ ]*$} $arg "" arg
 	if {[matchattr $hand +o]} {
 		if {[nick2hand $arg]  != "" } {
 			pushmode $chan -o $arg
@@ -104,6 +113,8 @@ proc op:deop {nick host hand chan arg} {
 	}
 }
 proc op:kick {nick host hand chan arg} {
+	regsub {^[\ ]*} $arg "" arg
+	regsub {[\ ]*$} $arg "" arg
 	if {[matchattr $hand +o]} {
 		set nickname [lindex [split $arg] 0]
 		set reason [lrange [split $arg] 1 end]
@@ -122,6 +133,8 @@ proc op:kick {nick host hand chan arg} {
 	}
 }
 proc op:ban {nick host hand chan arg} {
+	regsub {^[\ ]*} $arg "" arg
+	regsub {[\ ]*$} $arg "" arg
 	if {[matchattr $hand +o]} {
 		set nickname [lindex [split $arg] 0]
 		set reason [lrange [split $arg] 1 end]
@@ -150,6 +163,8 @@ proc op:ban {nick host hand chan arg} {
 	}
 }
 proc op:unban {nick host hand chan arg} {
+	regsub {^[\ ]*} $arg "" arg
+	regsub {[\ ]*$} $arg "" arg
 	if {[matchattr $hand +o]} {
 		set hostmask [lindex [split $arg] 0]
 		if {[matchban $arg $chan]} {
