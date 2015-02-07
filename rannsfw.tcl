@@ -155,7 +155,7 @@ proc nsfw:pub {nick host hand chan arg} {
 	  incr i
   }
 	  if {[regexp {^([0-9]+)$} $arg1]} {
-	  	if {$arg1 > 4} {
+	  	if {$arg1 > 4 && ![matchattr $hand +o]} {
 	  		set arg1 4
 	  	}
 		  array set completelist {}
@@ -167,7 +167,7 @@ proc nsfw:pub {nick host hand chan arg} {
 		  for {set i 0} {$i < $arg1} {incr i} {
 			putserv "PRIVMSG $chan :\002NSFW\002 Random $completelist($i)"
 		  }
-	  } elseif {[regexp {^([a-zA-Z]+)$} $arg1]} {
+	  } elseif {[regexp {^([a-zA-Z_0-9]+)$} $arg1]} {
 	  		  set page [myRand 1 20]
 	  		  set theurl "https://api.imgur.com/3/gallery/r/$arg1/time/$page"
 			  dict set hdr Authorization "Client-ID cefb2e6ae32f74f"
@@ -176,31 +176,46 @@ proc nsfw:pub {nick host hand chan arg} {
 			  set responseBody [::json::json2dict [http::data $token]]
 			  set data [dict filter $responseBody key "data"]
 			  set i 0
-			  array set idlist {}
-			  array set titlelist {}
+			  array set idlistsubreddit {}
+			  array set titlelistsubreddit {}
 			  foreach link [dict get $responseBody data] {
-				  set idlist($i) [dict get $link link]
-				  set titlelist($i) [dict get $link title]
+				  set idlistsubreddit($i) [dict get $link link]
+				  set titlelistsubreddit($i) [dict get $link title]
 				  incr i
 			  }
-			  set linkid [myRand 0 [array size idlist]]
+		   	  if {[array size idlistsubreddit] == 0} {
+		   	  		set i 0
+					array set idlist {}
+					array set titlelist {}
+					foreach link [dict get $responseBody data] {
+						set idlist($i) [dict get $link link]
+						set titlelist($i) [dict get $link title]
+						incr i
+					}
+					array set completelist {}
+					set forran [myRand 0 [array size idlist]]
+			  		set completelist(0) "$idlist($forran) - $titlelist($forran)"
+		   	  	    putserv "PRIVMSG $chan :\002NSFW\002 Opps! Imgur subreddit doesn't exist, don't worry here's something to look at!: $completelist(0)"
+		   	  	    return ""
+		   	  }
+			  set linkid [myRand 0 [array size idlistsubreddit]]
 			  set listnsfw ""
 			  set listtitle ""
 				if {$arg2 == "" || $arg2 == 0} {
 					set arg2 1
 				}
-				if {$arg2 > 4} {
+				if {$arg2 > 4 && ![matchattr $hand +o]} {
 		  			set arg2 4
 		  		}
 		  		array set completelist {}
 		    	for {set i 0} {$i < $arg2} {incr i} {
-		    		set forran [myRand 0 [array size idlist]]
-		    		set completelist($i) "$idlist($forran) - $titlelist($forran)"
+		    		set forran [myRand 0 [array size idlistsubreddit]]
+		    		set completelist($i) "$idlistsubreddit($forran) - $titlelistsubreddit($forran)"
 
 		   		}
 		   		unset i
 		   		if {$arg2 == 1} {
-		   			putserv "PRIVMSG $chan :\002NSFW\002 Random $arg1 $listnsfw $listtitle"
+		   			putserv "PRIVMSG $chan :\002NSFW\002 Random $arg1 $completelist(0)"
 		   		} else {
 		   			for {set i 0} {$i < $arg2} {incr i} {
 		   				putserv "PRIVMSG $chan :\002NSFW\002 Random $arg1 $completelist($i)"
