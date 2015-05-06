@@ -1,8 +1,49 @@
-package require http
+# Copyright (c) 2014 Patrick Hudson
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+# Required steps in short:
+#     1. Go to the Google developers console https://console.developers.google.com
+#     2. Create a new project. Give it a name like 'eggdrop', doesn't matter much.
+#     3. When the project is loaded, select menu "APIs" under "APIs & auth"
+#     4. In the list of APIs, enable the "YouTube Data API v3".
+#     5. Select menu "Credentials" and click "Create new key".
+#     6. Select key type "server".
+#     7. Fill in the IP(s) or IP range from which the eggdrop bot will send
+#        requests to google's servers. This is a whitelist, if the request
+#        comes from a different IP, it will be rejected.
+#        Note: If my-ip or my-hostname is configured in eggdrop.conf, they should
+#              be entered here.
+#     8. You now have an API KEY; copy it to the googleapikey variable in CONFIG SECTION
+# OpenWeather configuration
+# 	Goto http://openweathermap.org/
+# 		Click Sign Up
+# 		Fill in required boxes
+# 		After sign op, login, and goto http://openweathermap.org/my
+# 		Paate API KEy into apikey variable in CONFIG SECTION
 package require json
-namespace eval hackpat-weather {
+namespace eval hackpatweather {
+	#CONFIG SECTION
+	set apikey ""
+	set googleapikey ""
+	#/CONFIG SECTION
 	proc getweather {nick uhand hand args} {
-		set url "http://api.openweathermap.org/data/2.5/weather?APPID=c4b5f855bbc19f3565b2bcf1c91f7108&units=imperial&q="
+		set url "http://api.openweathermap.org/data/2.5/weather?APPID=$hackpatweather::apikey&units=imperial&q="
 		set chan [lindex $args 0]
 		set input [lindex $args 1]
 	      if {[lindex $input 0] == "-set"} {
@@ -36,15 +77,14 @@ namespace eval hackpat-weather {
 			append condout "[string toupper $word 0 0] "
 		}
 		regsub {[\ ]*$} $condout "" condout
-		set gapi "https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&sensor=true&result_type=administrative_area_level_1&key=AIzaSyCvLosQtBmP1rU1Fjuvc3lWHdIXxDWR87k"
+		set gapi "https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&sensor=true&result_type=administrative_area_level_1&key=$hackpatweather::googleapikey"
 		set json [http::data [http::geturl $gapi -strict 0]]
 		set gdict [json::json2dict $json]
-		putlog $gapi
 		regexp -nocase {formatted_address \{(.*?)\} geometry} $gdict " " location
 		putserv "PRIVMSG $chan :$name, $location: \002Conditions:\002 $condout \002Temperature:\002 $temp°\F ($tempcel°\C) \002Humdity:\002 $humidity% \002Wind Speed:\002 $windspeed\MPH"
 	}
 	proc getforecast {nick uhand hand args} {
-		set url "http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&units=imperial&cnt=5&q="
+		set url "http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&?APPID=$hackpatweather::apikey&units=imperial&cnt=5&q="
 		set chan [lindex $args 0]
 		set input [lindex $args 1]
 	      if {[lindex $input 0] == "-set"} {
@@ -67,10 +107,9 @@ namespace eval hackpat-weather {
 		set name [dict get $d1 city name]
 		set lat [dict get $d1 city coord lat]
 		set long [dict get $d1 city coord lon]
-		set gapi "https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&sensor=true&result_type=administrative_area_level_1&key=AIzaSyCvLosQtBmP1rU1Fjuvc3lWHdIXxDWR87k"
+		set gapi "https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&sensor=true&result_type=administrative_area_level_1&key=$hackpatweather::googleapikey"
 		set json [http::data [http::geturl $gapi -strict 0]]
 		set gdict [json::json2dict $json]
-		putlog $gapi
 		regexp -nocase {formatted_address \{(.*?)\} geometry} $gdict " " location
 		set i 0
 		array set days {}
@@ -110,7 +149,7 @@ namespace eval hackpat-weather {
 		return $returnString
 	}
 }
-bind pub -|- "!w" hackpat-weather::getweather
-bind pub -|- "!fc" hackpat-weather::getforecast
+bind pub -|- "!w" hackpatweather::getweather
+bind pub -|- "!fc" hackpatweather::getforecast
 
 putlog ".:Loaded:. hackpat-weather.tcl - HackPat@Freenode"
