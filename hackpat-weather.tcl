@@ -1,6 +1,6 @@
 package require http
 package require json
-namespace eval iniweather {
+namespace eval hackpat-weather {
 	proc getweather {nick uhand hand args} {
 		set url "http://api.openweathermap.org/data/2.5/weather?APPID=c4b5f855bbc19f3565b2bcf1c91f7108&units=imperial&q="
 		set chan [lindex $args 0]
