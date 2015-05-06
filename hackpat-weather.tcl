@@ -110,7 +110,7 @@ namespace eval hackpat-weather {
 		return $returnString
 	}
 }
-bind pub -|- "!w" iniweather::getweather
-bind pub -|- "!fc" iniweather::getforecast
+bind pub -|- "!w" hackpat-weather::getweather
+bind pub -|- "!fc" hackpat-weather::getforecast
 
 putlog ".:Loaded:. hackpat-weather.tcl - HackPat@Freenode"
