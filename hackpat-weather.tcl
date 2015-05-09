@@ -21,11 +21,11 @@
 #     1. Go to the Google developers console https://console.developers.google.com
 #     2. Create a new project. Give it a name like 'eggdrop', doesn't matter much.
 #     3. When the project is loaded, select menu "APIs" under "APIs & auth"
-#     4. In the list of APIs, enable the "YouTube Data API v3".
+#     4. In the list of APIs, enable the "GeoCoding API".
 #     5. Select menu "Credentials" and click "Create new key".
 #     6. Select key type "server".
 #     7. Fill in the IP(s) or IP range from which the eggdrop bot will send
-#        requests to google's servers. This is a whitelist, if the request
+#        requess to google's servers. This is a whitelist, if the request
 #        comes from a different IP, it will be rejected.
 #        Note: If my-ip or my-hostname is configured in eggdrop.conf, they should
 #              be entered here.
