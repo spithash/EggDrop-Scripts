@@ -35,7 +35,7 @@
 # 		Click Sign Up
 # 		Fill in required boxes
 # 		After sign op, login, and goto http://openweathermap.org/my
-# 		Paate API KEy into apikey variable in CONFIG SECTION
+# 		Paste API KEy into apikey variable in CONFIG SECTION
 package require json
 namespace eval hackpatweather {
 	#CONFIG SECTION
@@ -43,7 +43,7 @@ namespace eval hackpatweather {
 	set googleapikey ""
 	#/CONFIG SECTION
 	proc getweather {nick uhand hand args} {
-		set url "http://api.openweathermap.org/data/2.5/weather?APPID=$hackpatweather::apikey&units=imperial&q="
+		set url "http://api.openweathermap.org/data/2.5/weather?APPID=$hackpatweather::apikey&units=imperial&q=us,"
 		set chan [lindex $args 0]
 		set input [lindex $args 1]
 	      if {[lindex $input 0] == "-set"} {
@@ -65,9 +65,15 @@ namespace eval hackpatweather {
 		set name [dict get $d1 name]
 		set country [dict get $d1 sys country]
 		set temp [dict get $d1 main temp]
+#		set visibility [dict get $d1 visibility]
+		set temp_min [dict get $d1 main temp_min]
+		set temp_max [dict get $d1 main temp_max]
 		set tempcel [format {%0.0f} [expr {($temp - 32) * 5/9}]]
+		set tempcel_min [format {%0.0f} [expr {($temp_min - 32) * 5/9}]]
+		set tempcel_max [format {%0.0f} [expr {($temp_max - 32) * 5/9}]]
 		set windspeed [dict get $d1 wind speed]
 		set humidity [dict get $d1 main humidity]
+		set pressure [dict get $d1 main pressure]
 		set lat [dict get $d1 coord lat]
 		set long [dict get $d1 coord lon]
 		set cond1 [dict get $d1 weather]
@@ -81,10 +87,10 @@ namespace eval hackpatweather {
 		set json [http::data [http::geturl $gapi -strict 0]]
 		set gdict [json::json2dict $json]
 		regexp -nocase {formatted_address \{(.*?)\} geometry} $gdict " " location
-		putserv "PRIVMSG $chan :$name, $location: \002Conditions:\002 $condout \002Temperature:\002 $temp°\F ($tempcel°\C) \002Humdity:\002 $humidity% \002Wind Speed:\002 $windspeed\MPH"
+		putserv "PRIVMSG $chan :$name, $location: \002Conditions:\002 $condout \002Temperature:\002 $temp°\F ($tempcel°\C) \002High/Low:\002 $temp_max/$temp_min°\F ($tempcel_max/$tempcel_min°\C) \002Humdity:\002 $humidity% \002Wind Speed:\002 $windspeed\MPH \002Pressure:\002 $pressure\hpa"
 	}
 	proc getforecast {nick uhand hand args} {
-		set url "http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&?APPID=$hackpatweather::apikey&units=imperial&cnt=5&q="
+		set url "http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&?APPID=$hackpatweather::apikey&units=imperial&cnt=5&q=us,"
 		set chan [lindex $args 0]
 		set input [lindex $args 1]
 	      if {[lindex $input 0] == "-set"} {
@@ -118,7 +124,7 @@ namespace eval hackpatweather {
 			incr i
 		}
 		set todayDate [clock format [clock seconds] -format {%A %B %e, %Y}]
-		set forecast "Today's Date $todayDate - Forecast for $name, $location (High/Low) "
+		set forecast "Today's Date \002$todayDate\002 - Forecast for \002$name, $location\002 (High/Low) "
 		set returnString ""
 		for {set i 0} {$i < 5} {incr i} {
 			set ret [parseForecast $days($i)]
@@ -149,7 +155,7 @@ namespace eval hackpatweather {
 		return $returnString
 	}
 }
-bind pub -|- "!w" hackpatweather::getweather
+bind pub -|- "!wz" hackpatweather::getweather
 bind pub -|- "!fc" hackpatweather::getforecast
 
 putlog ".:Loaded:. hackpat-weather.tcl - HackPat@Freenode"
