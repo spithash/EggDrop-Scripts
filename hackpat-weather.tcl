@@ -43,7 +43,7 @@ namespace eval hackpatweather {
 	set googleapikey ""
 	#/CONFIG SECTION
 	proc getweather {nick uhand hand args} {
-		set url "http://api.openweathermap.org/data/2.5/weather?APPID=$hackpatweather::apikey&units=imperial&q=us,"
+		set url "http://api.openweathermap.org/data/2.5/weather?APPID=$hackpatweather::apikey&units=imperial&q="
 		set chan [lindex $args 0]
 		set input [lindex $args 1]
 	      if {[lindex $input 0] == "-set"} {
@@ -90,7 +90,7 @@ namespace eval hackpatweather {
 		putserv "PRIVMSG $chan :$name, $location: \002Conditions:\002 $condout \00312-\003 \002Temperature:\002 $temp°\F ($tempcel°\C) \00312-\003 \002High/Low:\002 $temp_max/$temp_min°\F ($tempcel_max/$tempcel_min°\C) \00312-\003 \002Humdity:\002 $humidity% \00312-\003 \002Wind Speed:\002 $windspeed\MPH \00312-\003 \002Pressure:\002 $pressure\hpa"
 	}
 	proc getforecast {nick uhand hand args} {
-		set url "http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&?APPID=$hackpatweather::apikey&units=imperial&cnt=5&q=us,"
+		set url "http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&?APPID=$hackpatweather::apikey&units=imperial&cnt=5&q="
 		set chan [lindex $args 0]
 		set input [lindex $args 1]
 	      if {[lindex $input 0] == "-set"} {
