@@ -25,6 +25,8 @@
 # Credits: special thanks to: username, speechles and arfer who helped me with this :)                      #
 #############################################################################################################
 
+package require http
+
 # Channel flag.
 setudef flag troll
 
