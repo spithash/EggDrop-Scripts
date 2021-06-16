@@ -62,5 +62,5 @@ while {$info != ""} {
 set troll(lasttime,$chan) [clock seconds]
 
 }
-putlog "\002troll.tcl\002 v2.1 by spithash@DALnet iz up and trollin'"
+putlog "\002troll.tcl\002 v2.1.1 by spithash@Libera iz up and trollin'"
 # EOF 
